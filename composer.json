@@ -1,0 +1,19 @@
+{
+  "name": "newageerp/sf-mailjet",
+  "type": "symfony-bundle",
+  "autoload": {
+    "psr-4": {
+      "Newageerp\\SfMailjet\\": ""
+    }
+  },
+  "require": {
+    "mailjet/mailjet-apiv3-php": "^1.5"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Arturas Jegorenkovas",
+      "email": "info@newageerp.com"
+    }
+  ]
+}
