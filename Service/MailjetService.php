@@ -45,8 +45,16 @@ class MailjetService
     public function contactSubscribeToList(string $email, string $list, bool $unsubscribeFromOthers = false)
     {
         $contact = $this->contactCreateIfNotExist($email);
+        if (!$contact || count($contact->getData()) === 0 || !is_array($contact->getData())) {
+            return false;
+        }
+
         $contactId = $contact->getData()[0]['ID'];
         $listId = $this->contactListGetByNameOrCreate($list);
+
+        if ($contactId === 0 || $listId === 0) {
+            return false;
+        }
 
         $actions = [
             [
@@ -57,6 +65,9 @@ class MailjetService
         if ($unsubscribeFromOthers) {
             $subscribes = $this->contactGetSubscribes($email);
             foreach ($subscribes as $s) {
+                if (!is_array($s)) {
+                    continue;
+                }
                 if ($s['ListID'] !== $listId) {
                     $actions[] = [
                         'Action' => "remove",
@@ -79,7 +90,7 @@ class MailjetService
             'Name' => $name
         ];
         $response = $this->getClient()->post(Resources::$Contactslist, ['body' => $body]);
-        if ($response->success()) {
+        if ($response->success() && count($response->getData()) > 0) {
             return $response->getData()[0]['ID'];
         }
         return 0;
