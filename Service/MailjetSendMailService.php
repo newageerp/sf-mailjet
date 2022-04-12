@@ -53,7 +53,7 @@ class MailjetSendMailService extends MailSendService
     public function getClient(): Client
     {
         if (!$this->client) {
-            $this->client = new Client($_ENV['NAE_SFS_MAILJET_PUBLIC_KEY'], $_ENV['NAE_SFS_MAILJET_PRIVATE_KEY'], true, ['version' => 'v3']);
+            $this->client = new Client($_ENV['NAE_SFS_MAILJET_PUBLIC_KEY'], $_ENV['NAE_SFS_MAILJET_PRIVATE_KEY'], true, ['version' => 'v3.1']);
         }
         return $this->client;
     }
