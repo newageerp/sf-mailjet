@@ -2,19 +2,13 @@
 
 namespace Newageerp\SfMailjet\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Mailjet\Resources;
 use Newageerp\SfMail\Service\MailSendService;
+use Mailjet\Client;
 
 class MailjetSendMailService extends MailSendService
 {
-    protected MailjetService $mailjetService;
-
-    public function __construct(EntityManagerInterface $em, MailjetService $mailjetService)
-    {
-        parent::__construct($em);
-        $this->mailjetService = $mailjetService;
-    }
+    protected ?Client $client = null;
 
     public function sendMail(
         string $fromName,
@@ -30,7 +24,7 @@ class MailjetSendMailService extends MailSendService
             return ['Email' => $email];
         }, $recipients);
 
-        $mj = $this->mailjetService->getClient();
+        $mj = $this->getClient();
         $body = [
             'Messages' => [
                 [
@@ -51,5 +45,16 @@ class MailjetSendMailService extends MailSendService
         if (!$response->success()) {
             throw new \Exception('Error ' . json_encode($response->getBody()) . ' ' . json_encode($body));
         }
+    }
+
+    /**
+     * @return Client
+     */
+    public function getClient(): Client
+    {
+        if (!$this->client) {
+            $this->client = new Client($_ENV['NAE_SFS_MAILJET_PUBLIC_KEY'], $_ENV['NAE_SFS_MAILJET_PRIVATE_KEY'], true, ['version' => 'v3']);
+        }
+        return $this->client;
     }
 }
