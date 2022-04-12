@@ -21,10 +21,11 @@ class MailjetSendMailService extends MailSendService
         string $fromEmail,
         string $subject,
         string $content,
-        array $recipients,
+        array  $recipients,
         ?array $attachments = [],
         string $customId = '',
-    ) {
+    )
+    {
         $recipientMap = array_map(function (string $email) {
             return ['Email' => $email];
         }, $recipients);
@@ -48,7 +49,7 @@ class MailjetSendMailService extends MailSendService
         ];
         $response = $mj->post(Resources::$Email, ['body' => $body]);
         if (!$response->success()) {
-            throw new \Exception('Error '. json_encode($response->getBody()));
+            throw new \Exception('Error ' . json_encode($response->getBody()) . ' ' . json_encode($body));
         }
     }
 }
