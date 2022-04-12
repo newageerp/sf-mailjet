@@ -48,7 +48,7 @@ class MailjetSendMailService extends MailSendService
         ];
         $response = $mj->post(Resources::$Email, ['body' => $body]);
         if (!$response->success()) {
-            throw new \Exception('Mail send error');
+            throw new \Exception('Error '. json_encode($response->getBody()));
         }
     }
 }
