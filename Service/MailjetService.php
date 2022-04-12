@@ -13,13 +13,16 @@ class MailjetService
     protected ?Client $client = null;
 
     /**
-     * @param string $apiKeyPublic
-     * @param string $apiKeyPrivate
+     * @param ?string $apiKeyPublic
+     * @param ?string $apiKeyPrivate
      */
-    public function __construct(string $apiKeyPublic, string $apiKeyPrivate)
+    public function __construct(
+        ?string $apiKeyPublic,
+        ?string $apiKeyPrivate
+    )
     {
-        $this->apiKeyPublic = $apiKeyPublic;
-        $this->apiKeyPrivate = $apiKeyPrivate;
+        $this->apiKeyPublic = $apiKeyPublic ?: $_ENV['NAE_SFS_MAILJET_PUBLIC_KEY'];
+        $this->apiKeyPrivate = $apiKeyPrivate ?: $_ENV['NAE_SFS_MAILJET_PRIVATE_KEY'];
     }
 
     public function contactCreateIfNotExist(string $email)
