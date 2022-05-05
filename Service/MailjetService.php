@@ -161,6 +161,8 @@ class MailjetService
     {
         if (!$this->client) {
             $this->client = new Client($this->getApiKeyPublic(), $this->getApiKeyPrivate(), true, ['version' => 'v3']);
+            $this->client->setConnectionTimeout(30);
+            $this->client->setTimeout(30);
         }
         return $this->client;
     }
